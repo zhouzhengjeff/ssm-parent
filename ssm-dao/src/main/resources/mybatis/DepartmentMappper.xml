@@ -5,8 +5,48 @@
 
 <mapper namespace="com.hnguigu.ssm.mapper.DepartmentMapper">
 
+    <resultMap id="DepartmentResultMap" type="Department">
+        <id property="id" column="DEPARTMENT_ID"/>
+        <result property="name" column="DEPARTMENT_NAME"/>
+        <result property="location" column="DEPARTMENT_LOCATION"/>
+    </resultMap>
+
     <insert id="save">
         INSERT INTO SSM_DEPARTMENT(DEPARTMENT_ID, DEPARTMENT_NAME, DEPARTMENT_LOCATION)
         VALUES (NULL, #{name}, #{location})
     </insert>
+
+    <update id="update">
+        UPDATE SSM_DEPARTMENT
+        <set>
+            <if test="name != null">
+                DEPARTMENT_NAME = #{name},
+            </if>
+            <if test="location != null">
+                DEPARTMENT_LOCATION = #{location},
+            </if>
+        </set>
+        WHERE department_id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE
+        FROM SSM_DEPARTMENT
+        WHERE DEPARTMENT_ID = #{id}
+    </delete>
+
+    <select id="findAll" resultMap="DepartmentResultMap">
+        SELECT DEPARTMENT_ID,
+               DEPARTMENT_NAME,
+               DEPARTMENT_LOCATION
+        FROM SSM_DEPARTMENT
+    </select>
+
+    <select id="findById" resultMap="DepartmentResultMap">
+        SELECT DEPARTMENT_ID,
+               DEPARTMENT_NAME,
+               DEPARTMENT_LOCATION
+        FROM SSM_DEPARTMENT
+        WHERE DEPARTMENT_ID = #{id}
+    </select>
 </mapper>

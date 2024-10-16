@@ -5,5 +5,23 @@
 
 <mapper namespace="com.hnguigu.ssm.mapper.UserMapper">
 
+    <resultMap id="UserResultMap" type="User">
+        <id property="id" column="USER_ID"/>
+        <result property="name" column="USER_NAME"/>
+        <result property="password" column="USER_PASSWORD"/>
+        <result property="salary" column="USER_SALARY"/>
+        <result property="birthday" column="USER_BIRTHDAY"/>
+        <result property="departmentId" column="DEPARTMENT_ID"/>
+    </resultMap>
 
+    <select id="findUsersByDepartmentId" resultMap="UserResultMap">
+        SELECT USER_ID,
+               USER_NAME,
+               USER_PASSWORD,
+               USER_SALARY,
+               USER_BIRTHDAY,
+               DEPARTMENT_ID
+        FROM SSM_USER
+        WHERE DEPARTMENT_ID = #{departmentId}
+    </select>
 </mapper>
