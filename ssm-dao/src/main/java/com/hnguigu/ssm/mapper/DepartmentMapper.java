@@ -1,5 +1,6 @@
 package com.hnguigu.ssm.mapper;
 
+import com.github.pagehelper.PageInfo;
 import com.hnguigu.ssm.entity.Department;
 
 import java.util.List;
@@ -15,4 +16,5 @@ public interface DepartmentMapper {
     Department findById(Long id);
 
     void update(Department department);
+
 }

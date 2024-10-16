@@ -1,5 +1,7 @@
 package com.hnguigu.ssm.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.hnguigu.ssm.entity.Department;
 import com.hnguigu.ssm.entity.User;
 import com.hnguigu.ssm.exception.SsmException;
@@ -12,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service("departmentService")
@@ -70,5 +71,21 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
 
         this.departmentMapper.update(department);
+    }
+
+    @Override
+    public PageInfo<Department> findPagination(Integer pageNum, Integer pageSize) {
+        PageInfo<Department> pageInfo = null;
+
+        if (ObjectUtils.isEmpty(pageNum) || pageNum <= 0 || ObjectUtils.isEmpty(pageSize) || pageSize <= 0) {
+            throw new IllegalArgumentException("");
+        }
+
+        PageHelper.startPage(pageNum, pageSize);
+        List<Department> departmentList = this.departmentMapper.findAll();
+        pageInfo = new PageInfo<>(departmentList);
+        pageInfo.setPageNum(pageNum);
+        pageInfo.setPageSize(pageSize);
+        return pageInfo;
     }
 }

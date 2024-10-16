@@ -23,7 +23,7 @@
     </tr>
     </thead>
     <tbody>
-    <c:forEach var="department" items="${departmentList}">
+    <c:forEach var="department" items="${pageInfo.list}">
         <tr>
             <td>${department.id}</td>
             <td>${department.name}</td>
@@ -35,10 +35,10 @@
 </table>
 
 <div id="paginationDiv">
-    <a href="${pageContext.request.contextPath}/departments/pagination/1">首页</a>
-    <a href="${pageContext.request.contextPath}/departments/pagination/">上一页</a>
-    <a href="${pageContext.request.contextPath}/departments/add">下一页</a>
-    <a href="${pageContext.request.contextPath}/departments/add">尾页</a>
+    <a href="${pageContext.request.contextPath}/departments/page/${pageInfo.navigateFirstPage}/${pageInfo.pageSize}">首页</a>
+    <a href="${pageContext.request.contextPath}/departments/page/${pageInfo.prePage}/${pageInfo.pageSize}">上一页</a>
+    <a href="${pageContext.request.contextPath}/departments/page/${pageInfo.nextPage}/${pageInfo.pageSize}">下一页</a>
+    <a href="${pageContext.request.contextPath}/departments/page/${pageInfo.navigateLastPage}/${pageInfo.pageSize}">尾页</a>
 </div>
 
 </body>

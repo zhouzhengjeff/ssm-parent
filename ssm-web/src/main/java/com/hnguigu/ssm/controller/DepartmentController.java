@@ -1,5 +1,6 @@
 package com.hnguigu.ssm.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.hnguigu.ssm.entity.Department;
 import com.hnguigu.ssm.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,29 @@ public class DepartmentController {
         return "redirect:/departments/findAll";
     }
 
+    @RequestMapping(value = "/page/{pageNum}/{pageSize}", method = RequestMethod.GET)
+    public String page(@PathVariable Integer pageNum, @PathVariable Integer pageSize, Model model) {
 
+        if (pageNum == 0) {
+            pageNum = 1;
+        }
+
+        PageInfo<Department> pageInfo = this.departmentService.findPagination(pageNum, pageSize);
+
+        boolean hasPreviousPage = pageInfo.isHasPreviousPage();
+        boolean hasNextPage = pageInfo.isHasNextPage();
+
+        if (!hasPreviousPage) {
+            pageInfo.setPageNum(1);
+        }
+
+        if (!hasNextPage) {
+            pageInfo.setPageNum(pageInfo.getPages());
+        }
+
+        model.addAttribute("pageInfo", pageInfo);
+        return "department/pager";
+    }
 
 
 }
