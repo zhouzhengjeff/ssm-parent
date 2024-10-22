@@ -13,6 +13,8 @@
 
     <mvc:annotation-driven conversion-service="conversionService"/>
 
+    <mvc:default-servlet-handler/>
+
     <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
         <property name="converters">
             <set>

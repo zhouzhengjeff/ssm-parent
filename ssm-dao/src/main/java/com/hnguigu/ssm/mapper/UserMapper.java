@@ -7,4 +7,10 @@ import java.util.List;
 public interface UserMapper {
 
     List<User> findUsersByDepartmentId(Long id);
+
+    List<User> findAll();
+
+    void removeById(Long id);
+
+    void save(User user);
 }
