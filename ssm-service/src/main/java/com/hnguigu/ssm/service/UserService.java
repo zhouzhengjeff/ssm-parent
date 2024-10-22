@@ -16,4 +16,8 @@ public interface UserService {
     PageInfo<User> findPagination(Integer pageNum, Integer pageSize);
 
     void addUser(User user);
+
+    User findUserId(Long id);
+
+    void modifyUser(User user);
 }

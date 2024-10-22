@@ -19,6 +19,28 @@
         VALUES (NULL, #{name}, #{password}, #{salary}, #{birthday}, #{departmentId})
     </insert>
 
+    <update id="update">
+        UPDATE SSM_USER
+        <set>
+            <if test="name != null">
+                USER_NAME = #{name},
+            </if>
+            <if test="password != null">
+                USER_PASSWORD = #{password},
+            </if>
+            <if test="salary != null">
+                USER_SALARY = #{salary},
+            </if>
+            <if test="birthday != null">
+                USER_BIRTHDAY = #{birthday},
+            </if>
+            <if test="departmentId != null">
+                DEPARTMENT_ID = #{departmentId},
+            </if>
+        </set>
+        where user_id = #{id}
+    </update>
+
     <delete id="removeById">
         DELETE
         FROM SSM_USER
@@ -44,5 +66,16 @@
                USER_BIRTHDAY,
                DEPARTMENT_ID
         FROM SSM_USER
+    </select>
+
+    <select id="findById" resultMap="UserResultMap">
+        SELECT USER_ID,
+               USER_NAME,
+               USER_PASSWORD,
+               USER_SALARY,
+               USER_BIRTHDAY,
+               DEPARTMENT_ID
+        FROM SSM_USER
+        WHERE USER_ID = #{id}
     </select>
 </mapper>

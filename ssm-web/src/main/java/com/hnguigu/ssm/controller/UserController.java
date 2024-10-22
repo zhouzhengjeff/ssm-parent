@@ -30,6 +30,13 @@ public class UserController {
         return Result.success(userList);
     }
 
+    @GetMapping(value = "/{id}")
+    @ResponseBody
+    public Result findById(@PathVariable Long id) {
+        User user = this.userService.findUserId(id);
+        return Result.success(user);
+    }
+
     /*@PostMapping
     @ResponseBody
     public Result add(User user) {
@@ -51,10 +58,17 @@ public class UserController {
         return Result.success(pageInfo);
     }
 
-    @GetMapping(value = "/delete/{id}")
+    @DeleteMapping(value = "/{id}")
     @ResponseBody
     public Result delete(@PathVariable Long id) {
         this.userService.deleteUserById(id);
+        return Result.success(null);
+    }
+
+    @PutMapping
+    @ResponseBody
+    public Result update(@RequestBody User user) {
+        this.userService.modifyUser(user);
         return Result.success(null);
     }
 }

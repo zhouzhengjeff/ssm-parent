@@ -66,4 +66,22 @@ public class UserServiceImpl implements UserService {
 
         this.userMapper.save(user);
     }
+
+    @Override
+    public User findUserId(Long id) {
+        if (ObjectUtils.isEmpty(id) || id <= 0) {
+            throw new IllegalArgumentException("参数不合法");
+        }
+
+        return this.userMapper.findById(id);
+    }
+
+    @Override
+    public void modifyUser(User user) {
+        if (ObjectUtils.isEmpty(user)) {
+            throw new IllegalArgumentException("参数不合法");
+        }
+
+        this.userMapper.update(user);
+    }
 }

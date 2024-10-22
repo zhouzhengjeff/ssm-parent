@@ -3,13 +3,11 @@ package com.hnguigu.ssm.controller;
 import com.github.pagehelper.PageInfo;
 import com.hnguigu.ssm.entity.Department;
 import com.hnguigu.ssm.service.DepartmentService;
+import com.hnguigu.ssm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,7 +23,13 @@ public class DepartmentController {
         List<Department> departmentList = this.departmentService.findAll();
         model.addAttribute("departmentList", departmentList);
         return "department/list";
+    }
 
+    @GetMapping
+    @ResponseBody
+    public Result findAll() {
+        List<Department> departmentList = this.departmentService.findAll();
+        return Result.success(departmentList);
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
