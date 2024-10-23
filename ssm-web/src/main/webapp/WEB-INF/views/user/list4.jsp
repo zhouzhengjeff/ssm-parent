@@ -194,26 +194,40 @@
     </div>
 
     <%--分页信息与分页导航信息--%>
-    <div class="col-md-8">
-        <div class="col-md-6">
+    <div class="col-md-12">
+        <div class="col-md-6" id="paginationInfo">
         </div>
-        <div class="col-md-offset-10">分頁導航條</div>
+        <div class="col-md-6" id="paginationNav">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+
+                </ul>
+            </nav>
+        </div>
     </div>
 </div>
 
 <script type="text/javascript">
+    let pageNum = 1;
+    let pageSize = 3;
+
     /*初始化用户表格数据*/
-    function initUserTable() {
+    function initUserTable(pageNum, pageSize) {
 
         // 清空tbody
         $("#userTable tbody").empty();
 
+        $("#paginationInfo").empty();
+        $("#paginationNav ul").empty();
+
         $.ajax({
-            url: "${pageContext.request.contextPath}/users",
+            url: "${pageContext.request.contextPath}/users/page/" + pageNum + "/" + pageSize,
             type: "GET",
             dataType: "json",
             success: function (resp) {
-                let users = resp.data;
+                console.log(resp)
+                let pageInfo = resp.data;
+                let users = pageInfo.list;
 
                 $.each(users, function (index, user) {
                     let idTd = $("<td></td>").append(user.id);
@@ -234,8 +248,46 @@
                     $("<tr></tr>").append(idTd).append(nameTd).append(passwordTd).append(salaryTd).append(birthdayTd).append(actionTd).appendTo("tbody");
                 });
 
+                // 分页信息
+                $("#paginationInfo").append("共" + pageInfo.total + "条记录 第" + pageInfo.pageNum + "页/共" + pageInfo.pages + "页");
+
+                // TODO 拼接分页导航条
+                // 拼接上一页按钮
+                if (pageInfo.hasPreviousPage) {
+                    let preLiEle = $("<li></li>").appendTo("#paginationNav ul");
+                    $("<a></a>").attr("href", "#")
+                        .attr("onclick", "toPage(" + pageInfo.prePage + ")")
+                        .attr("aria-label", "Previous").append("<span aria-hidden=\"true\">&laquo;</span>").appendTo(preLiEle);
+                }
+
+
+                $.each(pageInfo.navigatepageNums, function (index, pageNum) {
+
+                    // 遍历的页码等于当前页码
+                    let liNumEle;
+                    if (pageNum === pageInfo.pageNum) {
+                        liNumEle = $("<li class=\"active\"></li>").appendTo("#paginationNav ul");
+                    } else {
+                        liNumEle = $("<li></li>").appendTo("#paginationNav ul");
+                    }
+                    $("<a></a>").append(pageNum).attr("href", "#")
+                        .attr("onclick", "toPage(" + pageNum + ")")
+                        .appendTo(liNumEle);
+                })
+
+                // 拼接下一页按钮
+                if (pageInfo.hasNextPage) {
+                    let nextLiEle = $("<li></li>").appendTo("#paginationNav ul");
+                    $("<a></a>").attr("href", "#")
+                        .attr("onclick", "toPage(" + pageInfo.nextPage + ")")
+                        .attr("aria-label", "Next").append("<span aria-hidden=\"true\">&raquo;</span>").appendTo(nextLiEle);
+                }
             },
         })
+    }
+
+    function toPage(pageNum) {
+        initUserTable(pageNum, pageSize)
     }
 
     /*初始化部门列表*/
@@ -333,7 +385,7 @@
 
     $(function () {
         /*初始化用户表格数据*/
-        initUserTable();
+        initUserTable(pageNum, pageSize);
 
         /*日历的初始化*/
         $("input[name='birthday']").datepicker({

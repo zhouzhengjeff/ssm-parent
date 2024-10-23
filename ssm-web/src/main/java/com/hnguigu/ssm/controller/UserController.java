@@ -20,7 +20,7 @@ public class UserController {
 
     @GetMapping(value = "/index")
     public String index() {
-        return "user/list3";
+        return "user/list4";
     }
 
     @GetMapping
@@ -71,4 +71,6 @@ public class UserController {
         this.userService.modifyUser(user);
         return Result.success(null);
     }
+
+
 }
