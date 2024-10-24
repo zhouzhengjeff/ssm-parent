@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.hnguigu.ssm.entity.User;
 import com.hnguigu.ssm.mapper.UserMapper;
 import com.hnguigu.ssm.service.UserService;
+import com.hnguigu.ssm.vo.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -83,5 +84,23 @@ public class UserServiceImpl implements UserService {
         }
 
         this.userMapper.update(user);
+    }
+
+    @Override
+    public PageBean<User> page(Integer pageNumber, Integer pageSize) {
+        PageBean<User> pageBean = null;
+
+        if (ObjectUtils.isEmpty(pageNumber) || pageNumber <= 0 || ObjectUtils.isEmpty(pageSize) || pageSize <= 0) {
+            throw new IllegalArgumentException("参数不合法");
+        }
+
+        PageHelper.startPage(pageNumber, pageSize);
+        List<User> userList = this.userMapper.findAll();
+
+        PageInfo<User> pageInfo = new PageInfo<>(userList, 5);
+        pageBean = new PageBean<>();
+        pageBean.setTotal((int) pageInfo.getTotal());
+        pageBean.setRows(userList);
+        return pageBean;
     }
 }

@@ -2,6 +2,7 @@ package com.hnguigu.ssm.service;
 
 import com.github.pagehelper.PageInfo;
 import com.hnguigu.ssm.entity.User;
+import com.hnguigu.ssm.vo.PageBean;
 
 import java.util.List;
 
@@ -20,4 +21,6 @@ public interface UserService {
     User findUserId(Long id);
 
     void modifyUser(User user);
+
+    PageBean<User> page(Integer pageNumber, Integer pageSize);
 }

@@ -4,6 +4,7 @@ package com.hnguigu.ssm.controller;
 import com.github.pagehelper.PageInfo;
 import com.hnguigu.ssm.entity.User;
 import com.hnguigu.ssm.service.UserService;
+import com.hnguigu.ssm.vo.PageBean;
 import com.hnguigu.ssm.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +21,7 @@ public class UserController {
 
     @GetMapping(value = "/index")
     public String index() {
-        return "user/list4";
+        return "user/list5";
     }
 
     @GetMapping
@@ -56,6 +57,13 @@ public class UserController {
     public Result page(@PathVariable Integer pageNum, @PathVariable Integer pageSize) {
         PageInfo<User> pageInfo = this.userService.findPagination(pageNum, pageSize);
         return Result.success(pageInfo);
+    }
+
+    @GetMapping(value = "/findPage")
+    @ResponseBody
+    public PageBean<User> findPage(Integer pageNumber, Integer pageSize) {
+        PageBean<User> pageBean = this.userService.page(pageNumber, pageSize);
+        return pageBean;
     }
 
     @DeleteMapping(value = "/{id}")
